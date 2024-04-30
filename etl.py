@@ -32,14 +32,19 @@ class ETL(AbstractETL):
     Session = sessionmaker(bind=engine)
     session = Session()
     
-    df = self.transformed['UNIDADE_PRODUCAO']
-    lista_unidadePd = []
-    for indice, linha in df.iterrows():
-      unidade_pd = Unidade_Producao(numero=linha['numero'], peca_hora_nominal=linha['peca_hora_nominal'])
-      lista_unidadePd.append(unidade_pd)
-    print(lista_unidadePd)
-    
-    
+    # df_unidade = self.transformed['UNIDADE_PRODUCAO']
+    # lista_unidadePd = []
+    # for indice, linha in  df_unidade.iterrows():
+    #   unidade_pd = Unidade_Producao(numero=linha['numero'], peca_hora_nominal=linha['peca_hora_nominal'])
+    #   lista_unidadePd.append(unidade_pd)
+      
+    df_peca = self.transformed['PECA']
+    print(df_peca)
+    lista_pecas = []
+    for indice, linha in  df_peca.iterrows():
+      unidade_pecas = Peca(numero=linha['numero'], status=linha['status'], inicio_fabricacao=linha['inicio_fabricacao'], fim_fabricacao=linha['fim_fabricacao'], numero_unidade_producao=linha['numero_unidade_producao'])
+      lista_pecas.append(unidade_pecas)
+      
     
     session.add_all(lista_unidadePd)
     session.commit()
