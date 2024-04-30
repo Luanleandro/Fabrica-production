@@ -1,7 +1,9 @@
 from abstract_etl import AbstractETL
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 import pandas as pd
 import json
-from main import usuario, host, senha, banco_de_dados
+from classes import *
 
 class ETL(AbstractETL):
   def __init__(self, source, target):
@@ -26,9 +28,22 @@ class ETL(AbstractETL):
 # Iterar sobre a lista principal
 
   def load(self):
-    engine = create_engine(f"mssql+pymssql://{usuario}:{senha}@{host}/{banco_de_dados}")
-
+    engine = create_engine(self.target)
     Session = sessionmaker(bind=engine)
     session = Session()
     
-    pass
+    df = self.transformed['UNIDADE_PRODUCAO']
+    lista_unidadePd = []
+    for indice, linha in df.iterrows():
+      unidade_pd = Unidade_Producao(numero=linha['numero'], peca_hora_nominal=linha['peca_hora_nominal'])
+      lista_unidadePd.append(unidade_pd)
+    print(lista_unidadePd)
+    
+    
+    
+    session.add_all(lista_unidadePd)
+    session.commit()
+      
+      
+    
+

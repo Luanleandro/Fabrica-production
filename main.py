@@ -1,7 +1,7 @@
 # %%
 # imports
-from etl import ETL
 import os
+from etl import ETL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,8 +14,9 @@ host = os.getenv("HOST")
 banco_de_dados = os.getenv("BANCO_DE_DADOS")
 
 source = "dados.json"
-target = f"postgresql://{usuario}:{senha}@{host}/{banco_de_dados}"
+target = f"mssql+pymssql://{usuario}:{senha}@{host}/{banco_de_dados}"
 etl = ETL(source, target)
+print(target)
 # %%
 # testando
 etl.extract()
