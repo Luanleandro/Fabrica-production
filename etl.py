@@ -39,42 +39,37 @@ class ETL(AbstractETL):
       lista_unidadePd.append(unidade_pd)
       
     df_peca = self.transformed['PECA']
-    print(df_peca)
     lista_pecas = []
     for indice, linha in  df_peca.iterrows():
       unidade_pecas = Peca(numero=linha['numero'], status=linha['status'], inicio_fabricacao=linha['inicio_fabricacao'], fim_fabricacao=linha['fim_fabricacao'], numero_unidade_producao=linha['numero_unidade_producao'])
       lista_pecas.append(unidade_pecas)
     
     df_registroFalha = self.transformed['REGISTRO_FALHA']
-    print(df_registroFalha)
+
     lista_registro = []
     for indice, linha in df_registroFalha.iterrows():
       registro_Falhas = Registro_Falha(id=linha['id'], severidade=linha['severidade'], inicio=linha['inicio'], fim=linha['fim'], numero_unidade_producao=linha['numero_unidade_producao'])
       lista_registro.append(registro_Falhas)
       
     df_sopradora = self.transformed['SOPRADORA']
-    print(df_sopradora)
     lista_sopradora = []
     for indice, linha in df_sopradora.iterrows():
       sopradora = Sopradora(numero=linha['numero'], vazao_sopro=linha['vazao_sopro'], pressao_sopro=linha['pressao_sopro'])
       lista_sopradora.append(sopradora)
     
     df_torno_cnc = self.transformed['TORNO_CNC']
-    print(df_torno_cnc)
     lista_torno_cnc = []
     for indice, linha in df_torno_cnc.iterrows():
       torno_cnc = Torno_Cnc(numero=linha['numero'], velocidade_rotacao=linha['velocidade_rotacao'], tolerancia=linha['tolerancia'])
       lista_torno_cnc.append(torno_cnc)
     
     df_impressora3d = self.transformed['IMPRESSORA_3D']
-    print(df_impressora3d)
     lista_impressora3d = []
     for indice, linha in df_impressora3d.iterrows():
       impressora3d = Impressora3D(numero=linha['numero'], espessura_camada=linha['espessura_camada'], tipo_material=linha['tipo_material'])
       lista_impressora3d.append(impressora3d)
       
     df_fresadora = self.transformed['FRESADORA']
-    print(df_fresadora)
     lista_fresadora = []
     for indice, linha in df_fresadora.iterrows():
       fresadora = Fresadora(numero=linha['numero'], velocidade_rotacao=linha['velocidade_rotacao'], profundidade_corte=linha['profundidade_corte'])
@@ -82,6 +77,12 @@ class ETL(AbstractETL):
     
     
     session.add_all(lista_unidadePd)
+    session.add_all(lista_pecas)
+    session.add_all(lista_registro)
+    session.add_all(lista_sopradora)
+    session.add_all(lista_torno_cnc)
+    session.add_all(lista_impressora3d)
+    session.add_all(lista_fresadora)
     session.commit()
       
       
